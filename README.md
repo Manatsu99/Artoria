@@ -11,15 +11,15 @@ Rust + GPUI で作るデータベース構築ツール。
 
 ```powershell
 cd D:\Workspace\Artoria
-cargo run -p app
+cargo run -p artoria-app
 ```
 
 ## ビルド
 
 ```powershell
 cd D:\Workspace\Artoria
-cargo build -p app
-cargo build --release -p app
+cargo build -p artoria-app
+cargo build --release -p artoria-app
 ```
 
 ## CI

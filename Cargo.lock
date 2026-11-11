@@ -67,15 +67,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "330a5ed07fa54e4702c9d6c4174f74427fc0ef6e214bbd677ae50a5099946470"
 
 [[package]]
-name = "app"
-version = "0.1.0"
-dependencies = [
- "core",
- "db",
- "gpui",
-]
-
-[[package]]
 name = "ar_archive_writer"
 version = "0.5.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -112,6 +103,23 @@ name = "arrayvec"
 version = "0.7.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "d3fb67a6e08acf24fdeccbac2cb6ac4305825bd1f117462e0e6f2f193345ad56"
+
+[[package]]
+name = "artoria-app"
+version = "0.1.0"
+dependencies = [
+ "artoria-core",
+ "artoria-db",
+ "gpui",
+]
+
+[[package]]
+name = "artoria-core"
+version = "0.1.0"
+
+[[package]]
+name = "artoria-db"
+version = "0.1.0"
 
 [[package]]
 name = "as-raw-xcb-connection"
@@ -995,10 +1003,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "6245d59a3e82a7fc217c5828a6692dbc6dfb63a0c8c90495621f7b9d79704a0e"
 
 [[package]]
-name = "core"
-version = "0.1.0"
-
-[[package]]
 name = "core-foundation"
 version = "0.9.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1270,10 +1274,6 @@ name = "data-url"
 version = "0.3.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "be1e0bca6c3637f992fc1cc7cbc52a78c1ef6db076dbf1059c4323d6a2048376"
-
-[[package]]
-name = "db"
-version = "0.1.0"
 
 [[package]]
 name = "deflate64"

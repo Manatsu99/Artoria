@@ -1,13 +1,13 @@
 [package]
-name = "app"
+name = "artoria-app"
 version = "0.1.0"
 edition.workspace = true
 
 [dependencies]
 gpui = { workspace = true }
-core = { path = "../core" }
-db = { path = "../db" }
+artoria-core = { path = "../artoria-core" }
+artoria-db = { path = "../artoria-db" }
 
 [[bin]]
-name = "app"
+name = "artoria-app"
 path = "src/main.rs"

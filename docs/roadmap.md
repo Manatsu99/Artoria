@@ -1,6 +1,6 @@
-# DB構築ツール 機能ロードマップ
+# Artoria 機能ロードマップ
 
-Rust + GPUI で作るデータベース構築ツール。最初は SQL Server を対象にする。
+Artoria は、Rust + GPUI で作るデータベース構築ツール。最初は SQL Server を対象にする。
 
 ## ゴール
 
@@ -10,17 +10,17 @@ Rust + GPUI で作るデータベース構築ツール。最初は SQL Server �
 ## 設計原則
 
 - **AとBは同じスキーマモデルを共有する。** Bは「DBを読んでモデルを作る入口」を足すだけにする
-- **`core` はUIにもDBにも依存しない。** スキーマモデルとDDL生成だけを持つ
-- **DB方言は `core` の中で閉じる。** 将来PostgreSQLなどを足す時はここに方言を追加する
+- **`artoria-core` はUIにもDBにも依存しない。** スキーマモデルとDDL生成だけを持つ
+- **DB方言は `artoria-core` の中で閉じる。** 将来PostgreSQLなどを足す時はここに方言を追加する
 - **接続なしでも使える。** 設計・保存・DDLプレビューまでは、DBに繋がなくても動く
 
 ## クレート構成
 
 | クレート | 役割 | 主な依存 |
 |---|---|---|
-| `core` | スキーマモデル、DDL生成、差分計算、JSON保存 | serde, serde_json |
-| `db` | SQL Server接続、DDL実行、カタログ読み取り | tiberius, tokio, tokio-util |
-| `app` | GPUIの画面、`core`と`db`の連携 | gpui, gpui-component |
+| `artoria-core` | スキーマモデル、DDL生成、差分計算、JSON保存 | serde, serde_json |
+| `artoria-db` | SQL Server接続、DDL実行、カタログ読み取り | tiberius, tokio, tokio-util |
+| `artoria-app` | GPUIの画面、`artoria-core`と`artoria-db`の連携 | gpui, gpui-component |
 
 注意: tiberiusはtokio前提、GPUIは独自executor。別スレッドでtokioランタイムを動かし、結果をチャネルで画面側に返す。
 
@@ -30,16 +30,16 @@ Rust + GPUI で作るデータベース構築ツール。最初は SQL Server �
 
 目的: 開発を始められる状態にする。
 
-- [ ] Cargoワークスペース作成(`core` / `db` / `app`)
+- [ ] Cargoワークスペース作成(`artoria-core` / `artoria-db` / `artoria-app`)
 - [ ] GPUIのバージョン固定と、最小ウィンドウの起動確認
 - [ ] `gpui-component` を使うかどうかの判断
 - [ ] CI(`cargo fmt` / `clippy` / `test`)
 
-**完了条件**: `cargo run -p app` で空のウィンドウが開く。
+**完了条件**: `cargo run -p artoria-app` で空のウィンドウが開く。
 
 ---
 
-## Phase 1: スキーマモデルとDDL生成(core)
+## Phase 1: スキーマモデルとDDL生成(artoria-core)
 
 目的: 画面なしで「モデル → DDL」が完成している状態にする。
 
@@ -85,7 +85,7 @@ Rust + GPUI で作るデータベース構築ツール。最初は SQL Server �
 
 ---
 
-## Phase 2: 設計画面(app)— Aの中核
+## Phase 2: 設計画面(artoria-app)— Aの中核
 
 目的: 画面でスキーマを編集できる状態にする。まだDBには繋がない。
 
@@ -136,7 +136,7 @@ Rust + GPUI で作るデータベース構築ツール。最初は SQL Server �
 
 ---
 
-## Phase 4: SQL Server接続と実行(db)— A完成
+## Phase 4: SQL Server接続と実行(artoria-db)— A完成
 
 目的: 生成したDDLを実際のDBに適用できるようにする。
 
@@ -204,7 +204,7 @@ Rust + GPUI で作るデータベース構築ツール。最初は SQL Server �
 - [ ] ビュー、ストアドプロシージャ、トリガーの管理
 - [ ] 初期データ(シード)の管理
 - [ ] マイグレーション履歴の管理
-- [ ] 他DB対応(PostgreSQL, MySQL など)。`core` の方言層を拡張する
+- [ ] 他DB対応(PostgreSQL, MySQL など)。`artoria-core` の方言層を拡張する
 - [ ] CLI版(GUIなしでJSONからDDLを生成・適用)
 
 ---

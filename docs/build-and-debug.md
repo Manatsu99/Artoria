@@ -1,6 +1,6 @@
 # ビルド・デバッグ・リリース手順
 
-このリポジトリは Cargo workspace で構成されており、アプリ本体は `app` パッケージとして実行します。
+このリポジトリは Cargo workspace で構成されており、アプリ本体は `artoria-app` パッケージとして実行します。
 
 ## ファイル・フォルダ構成
 
@@ -8,32 +8,33 @@
 Artoria/
 ├── .github/
 │   └── workflows/
-│       └── ci.yml              # CI: fmt / clippy / test
-├── app/
-│   ├── Cargo.toml             # app パッケージ定義
+│       └── ci.yml                     # CI: fmt / clippy / test
+├── artoria-app/
+│   ├── Cargo.toml                    # artoria-app パッケージ定義
 │   └── src/
-│       └── main.rs            # GPUI の起動コード
-├── core/
-│   ├── Cargo.toml             # core パッケージ定義
+│       └── main.rs                   # GPUI の起動コード
+├── artoria-core/
+│   ├── Cargo.toml                    # artoria-core パッケージ定義
 │   └── src/
-│       └── lib.rs             # スキーマモデルとDDL生成の基盤
-├── db/
-│   ├── Cargo.toml             # db パッケージ定義
+│       └── lib.rs                    # スキーマモデルとDDL生成の基盤
+├── artoria-db/
+│   ├── Cargo.toml                    # artoria-db パッケージ定義
 │   └── src/
-│       └── lib.rs             # SQL Server 接続とDDL実行の基盤
+│       └── lib.rs                    # SQL Server 接続とDDL実行の基盤
 ├── docs/
-│   ├── roadmap.md             # 機能ロードマップ
-│   └── build-and-debug.md     # 本ドキュメント
+│   ├── roadmap.md                    # 機能ロードマップ
+│   └── build-and-debug.md            # 本ドキュメント
 ├── .gitignore
 ├── Cargo.lock
-├── Cargo.toml                 # workspace の定義
-└── README.md (必要に応じて追加)
+├── Cargo.toml                        # workspace の定義
+├── README.md
+└── .vscode/                          # VS Code task / launch 設定（必要時）
 ```
 
 ## ワークスペース設定のポイント
 
-- ルートの `Cargo.toml` では `workspace.members` に `app`, `core`, `db` を登録しています
-- 実行対象のアプリ本体は `app` パッケージです
+- ルートの `Cargo.toml` では `workspace.members` に `artoria-core`, `artoria-db`, `artoria-app` を登録しています
+- 実行対象のアプリ本体は `artoria-app` パッケージです
 - 旧来の `src/main.rs` ルートバイナリや `cargo run -p Artoria` は現状の構成では使いません
 
 ## ビルド
@@ -42,14 +43,14 @@ Artoria/
 
 ```powershell
 cd D:\Workspace\Artoria
-cargo check -p app
+cargo check -p artoria-app
 ```
 
 ### 2. 通常ビルド
 
 ```powershell
 cd D:\Workspace\Artoria
-cargo build -p app
+cargo build -p artoria-app
 ```
 
 ### 3. 全体の品質チェック
@@ -67,23 +68,23 @@ cargo test --workspace --all-targets
 
 ```powershell
 cd D:\Workspace\Artoria
-cargo run -p app
+cargo run -p artoria-app
 ```
 
-これで `app` パッケージの GPUI アプリが起動します。
+これで `artoria-app` パッケージの GPUI アプリが起動します。
 
 ### 2. VS Code でのデバッグ
 
-この環境では、VS Code のデバッグ設定は「Rust 用のデバッガー拡張」が入っていないと使えません。 そのため、現時点では `launch.json` を作りすぎるよりも、タスク経由で `cargo run -p app` を実行し、必要に応じてブラレークポイントを貼る運用が安定です。
+この環境では、VS Code のデバッグ設定は「Rust 用のデバッガー拡張」が入っていないと使えません。 そのため、現時点では `launch.json` を作りすぎるよりも、タスク経由で `cargo run -p artoria-app` を実行し、必要に応じてブラレークポイントを貼る運用が安定です。
 
 以下のタスクが利用可能です。
 
 ```powershell
-cargo run -p app
-cargo run --release -p app
+cargo run -p artoria-app
+cargo run --release -p artoria-app
 ```
 
-または VS Code のタスク一覧から `cargo: run app` を選んで実行します。
+または VS Code のタスク一覧から `cargo: run artoria-app` を選んで実行します。
 
 注: 「CodeLLDB」や Rust のデバッグアダプターが未導入の環境では、`launch.json` のデバッグ設定自体が認識されません。 その場合は、まずデバッガー拡張を入れてから、`launch.json` を有効化してください。
 
@@ -93,30 +94,30 @@ cargo run --release -p app
 
 ```powershell
 cd D:\Workspace\Artoria
-cargo build --release -p app
+cargo build --release -p artoria-app
 ```
 
 ### 2. リリース実行
 
 ```powershell
 cd D:\Workspace\Artoria
-cargo run --release -p app
+cargo run --release -p artoria-app
 ```
 
 ### 3. 生成済みバイナリを直接実行
 
 ```powershell
 cd D:\Workspace\Artoria
-.\target\release\app.exe
+.\target\release\artoria-app.exe
 ```
 
 ## よくあるミス
 
-- `cargo run -p app` を使うべきところで `cargo run -p Artoria` を使う
+- `cargo run -p artoria-app` を使うべきところで `cargo run -p Artoria` を使う
 - ルートの `src/main.rs` を残したまま、別のバイナリを実行しようとする
-- 実行対象のパッケージ名を workspace 内の `app` ではなく旧名と勘違いする
+- 実行対象のパッケージ名を workspace 内の `artoria-app` ではなく旧名と勘違いする
 
-正しい実行対象は `app` です。
+正しい実行対象は `artoria-app` です。
 
 ## 参考
 
