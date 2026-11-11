@@ -1,0 +1,13 @@
+[package]
+name = "app"
+version = "0.1.0"
+edition.workspace = true
+
+[dependencies]
+gpui = { workspace = true }
+core = { path = "../core" }
+db = { path = "../db" }
+
+[[bin]]
+name = "app"
+path = "src/main.rs"

@@ -1,6 +1,9 @@
-[package]
-name = "Artoria"
-version = "0.1.0"
+[workspace]
+resolver = "2"
+members = ["core", "db", "app"]
+
+[workspace.package]
 edition = "2024"
 
-[dependencies]
+[workspace.dependencies]
+gpui = "=0.2.2"

@@ -1,1 +1,21 @@
-/target
+# Rust build artifacts
+/target/
+**/target/
+
+# VS Code settings
+.vscode/
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+
+# Cargo lock is usually tracked for binary apps, but keep it if you want reproducible builds.
+# Cargo.lock is kept in this repository for now.
+
+# Rust toolchain local state
+.rustc_info
+
+# Temporary files
+*.tmp
+*.temp
+*.log
