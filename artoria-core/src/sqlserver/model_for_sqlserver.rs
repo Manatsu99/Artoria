@@ -18,6 +18,7 @@ pub struct Column {
     pub nullable: bool,
     pub identity: bool,
     pub default: Option<String>,   // null = DEFAULTなし
+    pub description: String,   // 列の説明
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -28,6 +29,7 @@ pub struct Table {
     pub primary_key: Vec<String>,   // None = 主キーなし
     pub foreign_keys: Vec<ForeignKey>,   // None = 外部キーなし
     pub indexes: Vec<Index>,   // None = インデックスなし
+    pub description: String,
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -66,6 +68,7 @@ mod tests {
                     nullable: false,
                     identity: true,
                     default: None,
+                    description: "".to_string(),
                 },
                 Column {
                     name: "Name".to_string(),
@@ -73,6 +76,7 @@ mod tests {
                     nullable: false,
                     identity: false,
                     default: None,
+                    description: "".to_string(),
                 },
                 Column {
                     name: "Email".to_string(),
@@ -80,6 +84,7 @@ mod tests {
                     nullable: true,
                     identity: false,
                     default: None,
+                    description: "".to_string(),
                 },
                 Column {
                     name: "CreatedAt".to_string(),
@@ -87,6 +92,7 @@ mod tests {
                     nullable: false,
                     identity: false,
                     default: Some("GETDATE()".to_string()),
+                    description: "".to_string(),
                 },
             ],
             primary_key: vec!["Id".to_string()],
@@ -96,6 +102,7 @@ mod tests {
                 columns: vec!["Email".to_string()],
                 unique: true,
             }],
+            description: "".to_string(),
         };
 
         let orders = Table {
@@ -108,6 +115,7 @@ mod tests {
                     nullable: false,
                     identity: true,
                     default: None,
+                    description: "".to_string(),
                 },
                 Column {
                     name: "UserId".to_string(),
@@ -115,6 +123,7 @@ mod tests {
                     nullable: false,
                     identity: false,
                     default: None,
+                    description: "".to_string(),
                 },
             ],
             primary_key: vec!["Id".to_string()],
@@ -126,6 +135,7 @@ mod tests {
                 ref_columns: vec!["Id".to_string()],
             }],
             indexes: vec![],
+            description: "".to_string(),
         };
 
         Schema {
