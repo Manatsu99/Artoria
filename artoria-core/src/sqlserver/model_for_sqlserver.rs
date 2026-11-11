@@ -7,8 +7,8 @@ pub enum SqlType {
     Bit,
     DateTime2,
     UniqueIdentifier,
-    Decimal(u8, u8),          // (精度, 小数桁)
-    NVarChar(Option<u32>),    // None = MAX
+    Decimal(u8, u8),       // (精度, 小数桁)
+    NVarChar(Option<u32>), // None = MAX
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -17,8 +17,8 @@ pub struct Column {
     pub ty: SqlType,
     pub nullable: bool,
     pub identity: bool,
-    pub default: Option<String>,   // null = DEFAULTなし
-    pub description: String,   // 列の説明
+    pub default: Option<String>, // null = DEFAULTなし
+    pub description: String,     // 列の説明
 }
 
 #[derive(Debug, Clone, PartialEq, Serialize, Deserialize)]
@@ -26,9 +26,9 @@ pub struct Table {
     pub schema: String,
     pub name: String,
     pub columns: Vec<Column>,
-    pub primary_key: Vec<String>,   // None = 主キーなし
-    pub foreign_keys: Vec<ForeignKey>,   // None = 外部キーなし
-    pub indexes: Vec<Index>,   // None = インデックスなし
+    pub primary_key: Vec<String>,      // None = 主キーなし
+    pub foreign_keys: Vec<ForeignKey>, // None = 外部キーなし
+    pub indexes: Vec<Index>,           // None = インデックスなし
     pub description: String,
 }
 
