@@ -45,29 +45,29 @@ Artoria は、Rust + GPUI で作るデータベース構築ツール。最初は
 
 ### モデル
 
-- [ ] テーブル(スキーマ名、テーブル名)
-- [ ] カラム(名前、型、NULL可否、IDENTITY、DEFAULT)
-- [ ] 主キー(複合キー対応)
-- [ ] 外部キー(複合キー対応、参照先テーブル・カラム)
-- [ ] インデックス(UNIQUE有無、複数カラム)
-- [ ] `Schema`(テーブル集合)全体
-- [ ] `PartialEq` / `Clone` / `Debug` / `Serialize` / `Deserialize` を付与
+- [x] テーブル(スキーマ名、テーブル名)
+- [x] カラム(名前、型、NULL可否、IDENTITY、DEFAULT)
+- [x] 主キー(複合キー対応)
+- [x] 外部キー(複合キー対応、参照先テーブル・カラム)
+- [x] インデックス(UNIQUE有無、複数カラム)
+- [x] `Schema`(テーブル集合)全体
+- [x] `PartialEq` / `Clone` / `Debug` / `Serialize` / `Deserialize` を付与
 
 ### 対応するSQL Serverの型(最初の範囲)
 
-- [ ] INT, BIGINT, BIT
-- [ ] DECIMAL(p, s)
-- [ ] NVARCHAR(n) / NVARCHAR(MAX)
-- [ ] DATETIME2
-- [ ] UNIQUEIDENTIFIER
+- [x] INT, BIGINT, BIT
+- [x] DECIMAL(p, s)
+- [x] NVARCHAR(n) / NVARCHAR(MAX)
+- [x] DATETIME2
+- [x] UNIQUEIDENTIFIER
 
 ### DDL生成
 
-- [ ] `CREATE TABLE`(PK含む)
-- [ ] FKは `ALTER TABLE ... ADD CONSTRAINT` で後から付ける(テーブルの依存順を計算しなくて済む)
-- [ ] `CREATE INDEX`
+- [x] `CREATE TABLE`(PK含む)
+- [x] FKは `ALTER TABLE ... ADD CONSTRAINT` で後から付ける(テーブルの依存順を計算しなくて済む)
+- [x] `CREATE INDEX`
 - [ ] 識別子のクォート(`[ ]`、中の `]` は `]]` にエスケープ)
-- [ ] `GO` は出力しない(クライアントの区切り文字でありT-SQLではないため)
+- [x] `GO` は出力しない(クライアントの区切り文字でありT-SQLではないため)
 
 ### 検証(バリデーション)
 
@@ -78,7 +78,7 @@ Artoria は、Rust + GPUI で作るデータベース構築ツール。最初は
 
 ### テスト
 
-- [ ] 期待するDDL文字列を先に決めて書く(スナップショット的に)
+- [x] 期待するDDL文字列を先に決めて書く(スナップショット的に)
 - [ ] 不正なスキーマがエラーになるテスト
 
 **完了条件**: テストだけで、複数テーブル・FK・インデックス付きのDDLが正しく出力される。
