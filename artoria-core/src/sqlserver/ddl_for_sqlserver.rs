@@ -1,4 +1,5 @@
-use crate::sqlserver::model_for_sqlserver::{ForeignKey, Index, SqlType, Table};
+use crate::sqlserver::model_for_sqlserver::{ForeignKey, Index, Schema, SqlType, Table};
+use crate::sqlserver::validate::{ValidationError, validate};
 
 fn quote(name: &str) -> String {
     format!("[{}]", name)
@@ -153,6 +154,19 @@ pub fn generate_ddl_table(table: &Table) -> Vec<String> {
     }
     ddls.extend(generate_comments(table));
     ddls
+}
+
+pub fn generate_ddl(schema: &Schema) -> Result<Vec<String>, Vec<ValidationError>> {
+    let errors = validate(schema);
+    if !errors.is_empty() {
+        return Err(errors);
+    }
+
+    let mut ddls = Vec::new();
+    for table in &schema.tables {
+        ddls.extend(generate_ddl_table(table));
+    }
+    Ok(ddls)
 }
 
 #[cfg(test)]
@@ -783,5 +797,66 @@ mod tests {
         for comment in &comments {
             println!("{}", comment);
         }
+    }
+
+    #[test]
+    fn test_generate_ddl_returns_ok_for_valid_schema() {
+        let schema = crate::sqlserver::model_for_sqlserver::Schema {
+            tables: vec![Table {
+                schema: "dbo".to_string(),
+                name: "Users".to_string(),
+                columns: vec![
+                    Column {
+                        name: "Id".to_string(),
+                        ty: SqlType::Int,
+                        nullable: false,
+                        identity: true,
+                        default: None,
+                        description: "".to_string(),
+                    },
+                    Column {
+                        name: "Name".to_string(),
+                        ty: SqlType::NVarChar(Some(100)),
+                        nullable: false,
+                        identity: false,
+                        default: None,
+                        description: "".to_string(),
+                    },
+                ],
+                primary_key: vec!["Id".to_string()],
+                foreign_keys: vec![],
+                indexes: vec![],
+                description: "".to_string(),
+            }],
+        };
+
+        let ddls = generate_ddl(&schema).expect("valid schema should generate ddl");
+        assert!(!ddls.is_empty());
+        assert!(ddls[0].starts_with("CREATE TABLE [dbo].[Users]"));
+    }
+
+    #[test]
+    fn test_generate_ddl_returns_err_for_invalid_schema() {
+        let schema = crate::sqlserver::model_for_sqlserver::Schema {
+            tables: vec![Table {
+                schema: "dbo".to_string(),
+                name: "Users".to_string(),
+                columns: vec![Column {
+                    name: "".to_string(),
+                    ty: SqlType::Int,
+                    nullable: false,
+                    identity: false,
+                    default: None,
+                    description: "".to_string(),
+                }],
+                primary_key: vec![],
+                foreign_keys: vec![],
+                indexes: vec![],
+                description: "".to_string(),
+            }],
+        };
+
+        let errors = generate_ddl(&schema).expect_err("invalid schema should fail validation");
+        assert!(!errors.is_empty());
     }
 }

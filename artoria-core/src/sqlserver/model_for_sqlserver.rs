@@ -153,4 +153,13 @@ mod tests {
         changed.tables[0].name = "Other".to_string();
         assert_ne!(schema, changed);
     }
+
+    #[test]
+    fn schema_can_be_serialized_and_deserialized_round_trip() {
+        let original = sample_schema();
+        let json = serde_json::to_string_pretty(&original).expect("schema should serialize");
+        let restored: Schema = serde_json::from_str(&json).expect("schema should deserialize");
+
+        assert_eq!(original, restored);
+    }
 }
